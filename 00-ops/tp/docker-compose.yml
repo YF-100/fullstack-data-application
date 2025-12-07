@@ -1,0 +1,14 @@
+services:
+  api:
+    build: ./api
+    expose: ["5001"]          # visible to other services
+    ports: ["5000:5001"]      # optional: host access at localhost:5000
+    restart: unless-stopped
+
+  front:
+    build: ./front
+    environment:
+      - API_URL=http://api:5001  # call API by its Compose service name
+    ports: ["8080:8080"]
+    depends_on: ["api"]
+    restart: unless-stopped
